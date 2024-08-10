@@ -1,0 +1,3 @@
+grpcio==1.65.4
+grpcio-tools==1.65.4
+aiohttp==3.10.3

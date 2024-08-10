@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/6a3bb170-5159-4bff-860b-aa74fb762697/resourceGroups/Python_gRPC/providers/Microsoft.Web/sites/PythongRPC-Server",
+    "appService.deploySubpath": "."
+}
