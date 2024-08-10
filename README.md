@@ -1,4 +1,4 @@
-Here’s the updated README with the correct file name for the client script:
+Here's the updated README with the additional details for running the client locally while the server is on the cloud, and Azure deployment configuration:
 
 ---
 
@@ -96,9 +96,13 @@ This command generates `greet_pb2.py` and `greet_pb2_grpc.py`.
 
 ### Running the Client (`greet_client.py`)
 
-`greet_client.py` is used to test gRPC interactions.
+`greet_client.py` is used to test gRPC interactions. You can run the client locally while the server is hosted on the cloud.
 
-1. **Start the Client**
+1. **Update Client Configuration**
+
+   Modify `greet_client.py` to point to your cloud server's hostname and port. For a secure connection, configure SSL/TLS as needed.
+
+2. **Start the Client**
 
    Run the `greet_client.py` file:
 
@@ -108,25 +112,34 @@ This command generates `greet_pb2.py` and `greet_pb2_grpc.py`.
 
    Follow the prompts to select an RPC call and interact with the gRPC server.
 
-## Configuration
+#### Secure Connection
 
-### gRPC Server Configuration
+If the gRPC server on the cloud uses SSL/TLS:
 
-- **Port**: The gRPC server listens on port 50051.
-- **Security**: By default, the server uses an insecure channel. To use SSL/TLS, configure `ssl_credentials` in `greet_client.py` as shown in the commented lines.
+1. Update `greet_client.py` to use SSL/TLS credentials.
+2. Make sure to provide the correct certificate paths or configurations.
 
-### HTTP Server Configuration
+#### Insecure Connection
 
-- **Port**: The HTTP server listens on port 8000.
-- **Endpoints**: The root endpoint (`/`) returns a JSON response.
+If the gRPC server does not use SSL/TLS:
 
-## Deployment Considerations
+1. Ensure that `greet_client.py` is configured to connect without SSL/TLS.
 
-When deploying to the cloud:
+## Azure Deployment Configuration
 
-1. **Ports**: Ensure that the ports used (50051 for gRPC and 8000 for HTTP) are open and accessible.
-2. **Environment Configuration**: Update `greet_client.py` to use the appropriate hostname and port for the cloud deployment.
-3. **Security**: Use secure channels (SSL/TLS) for gRPC in production environments.
+### Environment Variables
+
+Set the following environment variables for your Azure deployment:
+
+- **WEBSITES_PORT**: Set to `8000`
+- **HTTP20_ONLY_PORT**: Set to `50051`
+
+### HTTP Settings
+
+1. **Configuration -> General Settings**
+
+   - Set **HTTP Version** to `2.0`
+   - Set **HTTP 2.0 Proxy** to `"grpconly"`
 
 ## Troubleshooting
 
