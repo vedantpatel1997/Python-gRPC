@@ -1,4 +1,4 @@
-Here's a comprehensive README to explain the setup, configuration, and how to run the application locally, focusing on `app.py`, `greet_server.py`, and `greet.proto`.
+Here’s the updated README with the correct file name for the client script:
 
 ---
 
@@ -10,14 +10,14 @@ This project demonstrates a basic setup using gRPC and aiohttp in Python. The pr
 
 1. **gRPC Server (`greet_server.py`)**: A standalone server handling gRPC requests.
 2. **Integrated Server (`app.py`)**: An application combining an aiohttp HTTP server and a gRPC server.
-3. **Client Code**: A script to interact with the gRPC server.
+3. **Client Code (`greet_client.py`)**: A script to interact with the gRPC server.
 4. **Protocol Definition (`greet.proto`)**: Defines the gRPC service and messages.
 
 ## Project Structure
 
 - `app.py`: Contains the combined aiohttp HTTP server and gRPC server implementation.
 - `greet_server.py`: Contains the standalone gRPC server implementation.
-- `client.py`: A client script to interact with the gRPC server.
+- `greet_client.py`: A client script to interact with the gRPC server.
 - `greet.proto`: Protocol buffer file defining the gRPC service.
 
 ## Setup and Installation
@@ -94,16 +94,16 @@ This command generates `greet_pb2.py` and `greet_pb2_grpc.py`.
 
    This starts the gRPC server on port 50051.
 
-### Running the Client (`client.py`)
+### Running the Client (`greet_client.py`)
 
-`client.py` is used to test gRPC interactions.
+`greet_client.py` is used to test gRPC interactions.
 
 1. **Start the Client**
 
-   Run the `client.py` file:
+   Run the `greet_client.py` file:
 
    ```bash
-   python client.py
+   python greet_client.py
    ```
 
    Follow the prompts to select an RPC call and interact with the gRPC server.
@@ -113,7 +113,7 @@ This command generates `greet_pb2.py` and `greet_pb2_grpc.py`.
 ### gRPC Server Configuration
 
 - **Port**: The gRPC server listens on port 50051.
-- **Security**: By default, the server uses an insecure channel. To use SSL/TLS, configure `ssl_credentials` in `client.py` as shown in the commented lines.
+- **Security**: By default, the server uses an insecure channel. To use SSL/TLS, configure `ssl_credentials` in `greet_client.py` as shown in the commented lines.
 
 ### HTTP Server Configuration
 
@@ -125,7 +125,7 @@ This command generates `greet_pb2.py` and `greet_pb2_grpc.py`.
 When deploying to the cloud:
 
 1. **Ports**: Ensure that the ports used (50051 for gRPC and 8000 for HTTP) are open and accessible.
-2. **Environment Configuration**: Update `client.py` to use the appropriate hostname and port for the cloud deployment.
+2. **Environment Configuration**: Update `greet_client.py` to use the appropriate hostname and port for the cloud deployment.
 3. **Security**: Use secure channels (SSL/TLS) for gRPC in production environments.
 
 ## Troubleshooting
@@ -139,4 +139,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-Feel free to modify and expand this README as needed based on specific project requirements and deployment details.
+Feel free to adjust any details as needed for your specific setup and deployment needs!
