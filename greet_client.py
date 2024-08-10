@@ -18,9 +18,8 @@ async def run():
         # Connect to the gRPC server
         channel = grpc.aio.insecure_channel('localhost:50051')
         
-         # Define SSL credentials (empty for public servers)
-        ssl_credentials = grpc.ssl_channel_credentials()
-
+        # Define SSL credentials (empty for public servers)
+        # ssl_credentials = grpc.ssl_channel_credentials()
         # Connect to the gRPC server using secure_channel for HTTPS
         # channel = grpc.aio.secure_channel('pythongrpc-server.azurewebsites.net:443', ssl_credentials)
         
