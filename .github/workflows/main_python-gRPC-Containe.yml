@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://libraryacr.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_552300a5bab346a096f0c9b3c9b2ec0a }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_7ea733c36d5745ceb693e10ec4cc0ab5 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_93e201ee0e24430d9e11f7564f99b4cc }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_0be3e4cb82414cb1ba8ba594425cb206 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: libraryacr.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_552300a5bab346a096f0c9b3c9b2ec0a }}/python-grpc:${{ github.sha }}
+        tags: libraryacr.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_93e201ee0e24430d9e11f7564f99b4cc }}/python_grpc:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'python-gRPC-Containe'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_26735853cdde47e2ba8a3189c4f90a60 }}
-        images: 'libraryacr.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_552300a5bab346a096f0c9b3c9b2ec0a }}/python-grpc:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_4368d5598f7e4bbfa71be268545a44b4 }}
+        images: 'libraryacr.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_93e201ee0e24430d9e11f7564f99b4cc }}/python_grpc:${{ github.sha }}'
