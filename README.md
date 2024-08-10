@@ -153,11 +153,3 @@ Set the following environment variables for your Azure deployment:
 
 - **Connection Issues**: Ensure that the server is running and accessible at the specified port.
 - **Dependency Errors**: Verify that all required packages are installed and compatible.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-Feel free to modify any sections as needed!
