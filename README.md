@@ -1,4 +1,4 @@
-Here's the updated README with the additional details for running the client locally while the server is on the cloud, and Azure deployment configuration:
+Here is the updated README with the revised Azure deployment instructions:
 
 ---
 
@@ -139,17 +139,17 @@ Set the following environment variables for your Azure deployment:
 1. **Configuration -> General Settings**
 
    - Set **HTTP Version** to `2.0`
-   - Set **HTTP 2.0 Proxy** to `"grpconly"`
+   - Set **HTTP 2.0 Proxy** to `"gRPC ONLY"`
+
+2. **Startup Command**
+
+   Set the startup command to:
+
+   ```bash
+   python app.py
+   ```
 
 ## Troubleshooting
 
 - **Connection Issues**: Ensure that the server is running and accessible at the specified port.
 - **Dependency Errors**: Verify that all required packages are installed and compatible.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-Feel free to adjust any details as needed for your specific setup and deployment needs!
