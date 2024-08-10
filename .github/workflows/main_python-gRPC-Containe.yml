@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: libraryacr.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_93e201ee0e24430d9e11f7564f99b4cc }}/python_grpc:${{ github.sha }}
+        tags: libraryacr.azurecr.io/python_grpc:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
