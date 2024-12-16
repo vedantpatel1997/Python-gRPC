@@ -1,12 +1,24 @@
-FROM python:3.12
+# Use Python 3.11 as base image
+FROM python:3.11-slim
 
+# Set the working directory
 WORKDIR /app
 
-COPY requirements.txt /app/
-RUN pip install -r requirements.txt
+# Copy the requirements.txt into the container
+COPY requirements.txt .
 
-COPY . /app/
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 50051 8000
+# Copy the entire application code into the container
+COPY . .
 
-CMD [ "python", "app.py" ]
+# Expose the necessary ports for the server and client
+
+# For gRPC server
+EXPOSE 50051  
+# For HTTP server (aiohttp)
+EXPOSE 8000   
+
+# Command to start the server
+CMD ["python", "app.py"]

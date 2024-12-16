@@ -2,60 +2,70 @@ import grpc
 import greet_pb2
 import greet_pb2_grpc
 import asyncio
+from flask import Flask, request, jsonify
 
-def get_client_stream_requests():
-    while True:
-        name = input("Please enter a name (or nothing to stop chatting): ")
+app = Flask(__name__)
 
-        if name == "":
-            break
-
-        hello_request = greet_pb2.HelloRequest(greeting="Hello", name=name)
-        yield hello_request
-
-async def run():
+async def handle_rpc_call(rpc_call):
     try:
         # Connect to the gRPC server
-        channel = grpc.aio.insecure_channel('localhost:50051')
-        
-        # Define SSL credentials (empty for public servers)
-        # ssl_credentials = grpc.ssl_channel_credentials()
-        # Connect to the gRPC server using secure_channel for HTTPS
-        # channel = grpc.aio.secure_channel('pythongrpc-server.azurewebsites.net:443', ssl_credentials)
-        
+        channel = grpc.aio.insecure_channel('greet-server:50051')
         stub = greet_pb2_grpc.GreeterStub(channel)
-
-        print("1. SayHello - Unary")
-        print("2. ParrotSaysHello - Server Side Streaming")
-        print("3. ChattyClientSaysHello - Client Side Streaming")
-        print("4. InteractingHello - Both Streaming")
-        rpc_call = input("Which rpc would you like to make: ")
 
         if rpc_call == "1":
             hello_request = greet_pb2.HelloRequest(greeting="Bonjour", name="YouTube")
             hello_reply = await stub.SayHello(hello_request)
-            print("SayHello Response Received:")
-            print(hello_reply)
+            return {"response": hello_reply.message}
         elif rpc_call == "2":
             hello_request = greet_pb2.HelloRequest(greeting="Bonjour", name="YouTube")
+            responses = []
             async for hello_reply in stub.ParrotSaysHello(hello_request):
-                print("ParrotSaysHello Response Received:")
-                print(hello_reply)
+                responses.append(hello_reply.message)
+            return {"responses": responses}
         elif rpc_call == "3":
+            def get_client_stream_requests():
+                requests = [
+                    greet_pb2.HelloRequest(greeting="Hello", name="Client1"),
+                    greet_pb2.HelloRequest(greeting="Hello", name="Client2")
+                ]
+                for req in requests:
+                    yield req
+
             delayed_reply = await stub.ChattyClientSaysHello(get_client_stream_requests())
-            print("ChattyClientSaysHello Response Received:")
-            print(delayed_reply)
+            return {"response": delayed_reply.message}
         elif rpc_call == "4":
+            def get_client_stream_requests():
+                requests = [
+                    greet_pb2.HelloRequest(greeting="Hello", name="Client1"),
+                    greet_pb2.HelloRequest(greeting="Hello", name="Client2")
+                ]
+                for req in requests:
+                    yield req
+
+            responses = []
             async for response in stub.InteractingHello(get_client_stream_requests()):
-                print("InteractingHello Response Received: ")
-                print(response)
+                responses.append(response.message)
+            return {"responses": responses}
         else:
-            print("Invalid option")
+            return {"error": "Invalid option"}
 
     except grpc.RpcError as e:
-        print(f"gRPC error: {e.code()} - {e.details()}")
+        return {"error": f"gRPC error: {e.code()} - {e.details()}"}
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+        return {"error": f"An unexpected error occurred: {str(e)}"}
+
+@app.route("/rpc", methods=["POST"])
+def rpc_handler():
+    data = request.get_json()
+    rpc_call = data.get("rpc_call")
+    if not rpc_call:
+        return jsonify({"error": "rpc_call is required"}), 400
+
+    # Run the gRPC call asynchronously and return the result
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    result = loop.run_until_complete(handle_rpc_call(rpc_call))
+    return jsonify(result)
 
 if __name__ == "__main__":
-    asyncio.run(run())
+    app.run(host="0.0.0.0", port=5000)

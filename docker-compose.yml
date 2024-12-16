@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  greet-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: greet_server
+    ports:
+      - "50051:50051"  # gRPC server port
+    networks:
+      - greet-network
+
+  greet-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: greet_client
+    ports:
+      - "5000:5000"  # Flask server for the client
+    networks:
+      - greet-network
+    command: python greet_client.py  # Run the client script to interact with the gRPC server
+
+networks:
+  greet-network:
+    driver: bridge

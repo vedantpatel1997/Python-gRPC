@@ -58,9 +58,13 @@ class Application(web.Application):
 
     def __on_shutdown(self):
         async def _on_shutdown(app):
-            await self.grpc_server.stop()
-            self.grpc_task.cancel()
-            await self.grpc_task
+            await self.grpc_server.stop()  # Fix for awaiting stop method
+            if self.grpc_task:
+                self.grpc_task.cancel()
+                try:
+                    await self.grpc_task
+                except asyncio.CancelledError:
+                    pass  # Handle cancellation
         return _on_shutdown
 
     def add_routes(self):
@@ -86,7 +90,7 @@ class GrpcServer:
         self.server.start()
 
     async def stop(self):
-        await self.server.stop(grace=0)
+        self.server.stop(grace=0)
 
 # Run both servers
 if __name__ == "__main__":
